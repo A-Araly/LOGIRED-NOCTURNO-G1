@@ -18,10 +18,11 @@ async function obtener(id) {
 }
 
 async function crear(datos) {
-  const errores = validarcliente(datos);
+  const clientesExistentes = await clienteModel.findAll();
+  const errores = validarCliente(datos, clientesExistentes);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
 
-  const cliente = construircliente(datos);
+  const cliente = construirCliente(datos);
 
   // Regla de negocio: no puede haber dos clientes con el mismo email
   // (el email es con lo que se inicia sesión). 409 = Conflict.

@@ -7,9 +7,9 @@
 // a una base de datos real no obligue a modificar la capa de servicio.
 // =====================================================================
 const clientes = [
-  { id: 1, nombre: 'Administrador General', email: 'admin@empresa.com', rol: 'administrador', activo: true },
-  { id: 2, nombre: 'Laura Gómez', email: 'laura.gomez@empresa.com', rol: 'administrador', activo: true },
-  { id: 3, nombre: 'Andrés Castillo', email: 'andres.castillo@empresa.com', rol: 'administrador', activo: false },
+  { id: 1, nombre: 'cliente1', documento: '1111777999', telefono: '3115644230', email: 'cliente1@empresa.com', ciudad: 'cali', activo: true },
+  { id: 2, nombre: 'cliente2', documento: '1111777888', telefono: '5778925985', email: 'cliente2@empresa.com', ciudad: 'medellin', activo: true},
+  { id: 3, nombre: 'cliente2', documento: '1111777777', telefono: '6667742039', email: 'cliente3@empresa.com', ciudad: 'bogota', activo: true},
 ];
 let siguienteId = 4;
 
@@ -18,11 +18,11 @@ async function findAll() {
 }
 
 async function findById(id) {
-  return clientes.find((u) => u.id === id) || null;
+  return clientes.find((c) => c.id === id) || null;
 }
 
 async function findByEmail(email) {
-  return clientes.find((u) => u.email === email) || null;
+  return clientes.find((c) => c.email === email) || null;
 }
 
 async function create(cliente) {
