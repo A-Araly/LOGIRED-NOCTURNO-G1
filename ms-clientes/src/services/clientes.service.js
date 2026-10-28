@@ -4,7 +4,7 @@
 // No sabe nada de HTTP (req/res) ni de cómo se guardan los datos.
 // =====================================================================
 const repo = require('../repositories/clientes.repository');
-const { validarcliente, construircliente } = require('../models/cliente');
+const { validarCliente, construirCliente } = require('../models/cliente');
 const HttpError = require('../utils/http-error');
 
 async function listar() {
@@ -18,7 +18,7 @@ async function obtener(id) {
 }
 
 async function crear(datos) {
-  const clientesExistentes = await clienteModel.findAll();
+  const clientesExistentes = await repo.findAll();
   const errores = validarCliente(datos, clientesExistentes);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
 

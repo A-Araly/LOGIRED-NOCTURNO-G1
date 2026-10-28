@@ -1,0 +1,22 @@
+$kind: http-request
+description: ""
+url: http://localhost:3002/clientes
+method: POST
+body:
+  type: json
+  content: " {\r
+
+    \        \"nombre\": \"cliente4\",\r
+
+    \        \"documento\": \"1111772222\",\r
+
+    \        \"telefono\": \"3115644410\",\r
+
+    \        \"email\": \"cliente4@empresa.com\",\r
+
+    \        \"ciudad\": \"cali\",\r
+
+    \        \"activo\": true\r
+
+    }"
+order: 5000
