@@ -7,9 +7,9 @@
 // a una base de datos real no obligue a modificar la capa de servicio.
 // =====================================================================
 const clientes = [
-  { id: 1, nombre: 'cliente1', documento: '1111777999', telefono: '3115644230', email: 'cliente1@empresa.com', ciudad: 'cali', activo: true },
-  { id: 2, nombre: 'cliente2', documento: '1111777888', telefono: '5778925985', email: 'cliente2@empresa.com', ciudad: 'medellin', activo: true},
-  { id: 3, nombre: 'cliente2', documento: '1111777777', telefono: '6667742039', email: 'cliente3@empresa.com', ciudad: 'bogota', activo: true},
+  { id: 1, nombre: 'cliente1', documento: '1111777999', telefono: '3115644230', email: 'cliente1@empresa.com', ciudad: 'cali'},
+  { id: 2, nombre: 'cliente2', documento: '1111777888', telefono: '5778925985', email: 'cliente2@empresa.com', ciudad: 'medellin'},
+  { id: 3, nombre: 'cliente2', documento: '1111777777', telefono: '6667742039', email: 'cliente3@empresa.com', ciudad: 'bogota'},
 ];
 let siguienteId = 4;
 

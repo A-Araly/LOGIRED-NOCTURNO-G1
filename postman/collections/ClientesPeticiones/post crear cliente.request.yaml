@@ -14,9 +14,7 @@ body:
 
     \        \"email\": \"cliente4@empresa.com\",\r
 
-    \        \"ciudad\": \"cali\",\r
-
-    \        \"activo\": true\r
+    \        \"ciudad\": \"cali\"\r
 
     }"
 order: 5000

@@ -52,9 +52,9 @@ function validarCliente(datos, clientesExistentes = [], idExcluir = null) {
   //if (!roles.includes(datos.rol)) {
     //errores.push(`rol debe ser uno de: ${roles.join(', ')}`);
   //}
-  if (datos.activo !== undefined && typeof datos.activo !== 'boolean') {
-    errores.push('activo debe ser true o false');
-  }
+  //if (datos.activo !== undefined && typeof datos.activo !== 'boolean') {
+    //errores.push('activo debe ser true o false');
+  //}
   return errores;
 }
 
@@ -67,7 +67,7 @@ function construirCliente(datos) {
     email: datos.email.trim().toLowerCase(),
     ciudad: datos.ciudad.trim().toLowerCase(),
     //rol: datos.rol,
-    activo: datos.activo === undefined ? true : datos.activo,
+    //activo: datos.activo === undefined ? true : datos.activo,
   };
 }
 
