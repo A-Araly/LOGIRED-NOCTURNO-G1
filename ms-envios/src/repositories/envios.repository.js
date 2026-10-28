@@ -6,29 +6,29 @@
 // Todas las funciones son async (devuelven promesas) para que el cambio
 // a una base de datos real no obligue a modificar la capa de servicio.
 // =====================================================================
-const usuarios = [
-  { id: 1, nombre: 'Administrador General', email: 'admin@empresa.com', rol: 'administrador', activo: true },
-  { id: 2, nombre: 'Laura Gómez', email: 'laura.gomez@empresa.com', rol: 'administrador', activo: true },
-  { id: 3, nombre: 'Andrés Castillo', email: 'andres.castillo@empresa.com', rol: 'administrador', activo: false },
+const envios = [
+  { id: 1, numero_guia: 'LR-2026-567890', cliente_id: 1, peso_kg: 5 , ciudad_destino: 'Bogota', direccion_destino: 'calle 456', estado: "registrado", fecha_registro: "2024-06-01" },
+  { id: 2, numero_guia: 'LR-2026-567891', cliente_id: 2, peso_kg: 2, ciudad_destino: 'Cali', direccion_destino: 'carrera 56', estado: "en_transito", fecha_registro: "2024-06-02" },
+  { id: 3, numero_guia: 'LR-2026-567892', cliente_id: 3, peso_kg: 10, ciudad_destino: 'Medellin', direccion_destino: 'calle 123', estado: "entregado", fecha_registro: "2024-06-03" },
 ];
 let siguienteId = 4;
 
 async function findAll() {
-  return usuarios;
+  return envios;
 }
 
 async function findById(id) {
-  return usuarios.find((u) => u.id === id) || null;
+  return envios.find((e) => e.id === id) || null;
 }
 
-async function findByEmail(email) {
-  return usuarios.find((u) => u.email === email) || null;
+async function findByNumeroGuia(numero_guia) {
+  return envios.find((e) => e.numero_guia === numero_guia) || null;
 }
 
-async function create(usuario) {
-  const nuevo = { id: siguienteId++, ...usuario };
-  usuarios.push(nuevo);
+async function create(envio) {
+  const nuevo = { id: siguienteId++, ...envio };
+  envios.push(nuevo);
   return nuevo;
 }
 
-module.exports = { findAll, findById, findByEmail, create };
+module.exports = { findAll, findById, findByNumeroGuia, create };

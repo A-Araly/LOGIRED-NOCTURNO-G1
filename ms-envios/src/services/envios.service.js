@@ -4,7 +4,7 @@
 // No sabe nada de HTTP (req/res) ni de cómo se guardan los datos.
 // =====================================================================
 const repo = require('../repositories/envios.repository');
-const { validarUsuario, construirUsuario } = require('../models/envio');
+const { validarenvio, construirenvio } = require('../models/envio');
 const HttpError = require('../utils/http-error');
 
 async function listar() {
@@ -18,18 +18,18 @@ async function obtener(id) {
 }
 
 async function crear(datos) {
-  const errores = validarUsuario(datos);
+  const errores = validarenvio(datos);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
 
-  const usuario = construirUsuario(datos);
+  const envio = construirenvio(datos);
 
-  // Regla de negocio: no puede haber dos usuarios con el mismo email
-  // (el email es con lo que se inicia sesión). 409 = Conflict.
-  if (await repo.findByEmail(usuario.email)) {
-    throw new HttpError(409, `Ya existe un usuario con el email ${usuario.email}`);
+  // Regla de negocio: no puede haber dos envios con el mismo numero de guia
+  // (el numero de guia es único para cada envio). 409 = Conflict.
+  if (await repo.findByNumeroGuia(envio.numero_guia)) {
+    throw new HttpError(409, `Ya existe un envio con el numero de guia ${envio.numero_guia}`);
   }
 
-  return repo.create(usuario);
+  return repo.create(envio);
 }
 
 module.exports = { listar, obtener, crear };

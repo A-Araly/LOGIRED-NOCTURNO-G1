@@ -11,7 +11,6 @@ function leerId(req) {
   if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'El id debe ser un entero positivo');
   return id;
 }
-
 // GET /envios
 async function listar(req, res) {
   const envios = await service.listar();
