@@ -43,6 +43,5 @@ Prueben en el navegador: http://localhost:3001/health y http://localhost:3001/cl
 | POST | /clientes | 201 cliente creado · 400 datos inválidos · 409 email repetido |
 
 Ejemplo de cuerpo para POST:
-`{"nombre": "Marta Ríos", "email": "marta.rios@empresa.com", "rol": "despacho"}`
+`{nombre: 'cliente1', documento: '1111777999', telefono: '3115644230', email: 'cliente1@empresa.com', ciudad: 'cali'}`
 
-Los roles válidos se configuran en el archivo .env (`ROLES=administrador,despacho,flota`).
