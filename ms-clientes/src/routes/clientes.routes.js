@@ -11,6 +11,7 @@ router.get('/', controller.listar);      // listar todos los clientes
 router.get('/:id', controller.obtener);  // obtener un cliente por id
 router.post('/', controller.crear);      // crear un cliente
 router.put("/:id", controller.actualizar);
+router.delete("/:id", controller.eliminar);
 
 // Taller 2: agregar PUT /:id (actualizar) y DELETE /:id (eliminar)
 

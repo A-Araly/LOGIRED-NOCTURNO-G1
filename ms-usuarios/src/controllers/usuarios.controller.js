@@ -15,7 +15,14 @@ function leerId(req) {
 
 // GET /usuarios
 async function listar(req, res) {
-  const usuarios = await service.listar();
+  const filtros = { ciudad: req.query.ciudad };
+  if(req.query.ids){
+    filtros.ids = string(req.query.ids).split(',').map(Number);
+    if (filtros.ids.some((id) => !Number.isInteger(id) || id <= 0)){
+      throw new HttpError(400, 'El id debe ser un entero positivo');
+    }
+  }
+  const usuarios = await service.listar(filtros);
   res.status(200).json(usuarios);
 }
 
@@ -36,4 +43,9 @@ async function actualizar(req, res) {
   res.status(200).json(usuario);
 }
 
-module.exports = { listar, obtener, crear, actualizar };
+async function eliminar(req, res) {
+  await service.eliminar(leerId(req));
+  res.status(204).end();
+}
+
+module.exports = { listar, obtener, crear, actualizar, eliminar };

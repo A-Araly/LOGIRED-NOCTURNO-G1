@@ -7,8 +7,8 @@ const repo = require('../repositories/clientes.repository');
 const { validarCliente, construirCliente } = require('../models/cliente');
 const HttpError = require('../utils/http-error');
 
-async function listar() {
-  return repo.findAll();
+async function listar(filtros) {
+  return repo.findAll(filtros);
 }
 
 async function obtener(id) {
@@ -34,14 +34,26 @@ async function crear(datos) {
 }
 
 async function actualizar(id, datos) {
-  const errores = await validarCliente(datos);
+  const clientesExistentes = await repo.findAll();
+  const errores = await validarCliente(datos, clientesExistentes, id);
   if(errores.length > 0) throw new HttpError(400, "Datos inválidos", errores);
 
   const cliente = construirCliente(datos);
+
+  const otro = await repo.findByEmail(cliente.email);
+  if (otro && otro.id !== id) {
+    throw new HttpError(409, `Ya existe un cliente con el email ${cliente.email}`);
+  }
 
   const actualizado = await repo.update(id, cliente);
   if(!actualizado) throw new HttpError(404, `No existe el cliente con id ${id}`);
   return actualizado;
 }
 
-module.exports = { listar, obtener, crear, actualizar };
+
+async function eliminar(id) {
+  const eliminado = await repo.remove(id);
+  if(!eliminado) throw new HttpError (404, `No existe el cliente con el id ${id}`);
+}
+
+module.exports = { listar, obtener, crear, actualizar, eliminar };

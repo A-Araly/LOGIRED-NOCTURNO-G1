@@ -13,8 +13,10 @@ const usuarios = [
 ];
 let siguienteId = 4;
 
-async function findAll() {
-  return usuarios;
+async function findAll(filtros = {}) {
+  return clientes.filter((c) =>
+  (!filtros.ciudad || c.ciudad === filtros.ciudad) &&
+  (!filtros.ids || filtros.ids.includes(c.id)));
 }
 
 async function findById(id) {
@@ -36,6 +38,13 @@ async function update(id, usuario) {
   if(posicion === -1) return null;
   usuarios[posicion] = {id, ...usuario}
   return usuarios[posicion];
-  
 }
-module.exports = { findAll, findById, findByEmail, create, update };
+
+async function remove(id) {
+  const posicion = usuarios.findIndex((c) => c.id === id);
+  if(posicion === -1) return false;
+  usuarios.splice(posicion, 1);
+  return true;
+}
+
+module.exports = { findAll, findById, findByEmail, create, update, remove };
