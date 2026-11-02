@@ -3,6 +3,7 @@
 // Traduce HTTP <-> servicio: lee la petición (params, body),
 // llama al servicio y arma la respuesta (código de estado + JSON).
 // =====================================================================
+const { validarUsuario, construirUsuario } = require('../models/usuario');
 const service = require('../services/usuarios.service');
 const HttpError = require('../utils/http-error');
 
@@ -30,4 +31,9 @@ async function crear(req, res) {
   res.status(201).location(`${req.baseUrl}/${nuevo.id}`).json(nuevo);
 }
 
-module.exports = { listar, obtener, crear };
+async function actualizar(req, res) {
+  const usuario = await service.actualizar(leerId(req), req.body);
+  res.status(200).json(usuario);
+}
+
+module.exports = { listar, obtener, crear, actualizar };

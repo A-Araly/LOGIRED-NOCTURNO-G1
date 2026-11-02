@@ -18,7 +18,7 @@
 const EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Devuelve una lista de errores de validación (vacía si todo está bien)
-function validarCliente(datos, clientesExistentes = [], idExcluir = null) {
+function validarCliente(datos, clientesExistentes = []) {
   const errores = [];
   if (!datos || typeof datos !== 'object') {
     return ['Se esperaba un objeto JSON con los datos del cliente'];
@@ -29,7 +29,7 @@ function validarCliente(datos, clientesExistentes = [], idExcluir = null) {
     const documento = datos.documento.trim();
 
     const documentoExiste = clientesExistentes.some(
-      (c) => c.documento === documento && c.id !== idExcluir
+      (c) => c.documento === documento && c.id
     );
 
     if (documentoExiste) {

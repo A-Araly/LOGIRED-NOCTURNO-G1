@@ -33,4 +33,15 @@ async function crear(datos) {
   return repo.create(cliente);
 }
 
-module.exports = { listar, obtener, crear };
+async function actualizar(id, datos) {
+  const errores = await validarCliente(datos);
+  if(errores.length > 0) throw new HttpError(400, "Datos inválidos", errores);
+
+  const cliente = construirCliente(datos);
+
+  const actualizado = await repo.update(id, cliente);
+  if(!actualizado) throw new HttpError(404, `No existe el cliente con id ${id}`);
+  return actualizado;
+}
+
+module.exports = { listar, obtener, crear, actualizar };

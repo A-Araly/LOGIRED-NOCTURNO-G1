@@ -31,4 +31,12 @@ async function create(cliente) {
   return nuevo;
 }
 
-module.exports = { findAll, findById, findByEmail, create };
+async function update(id, cliente) {
+  const posicion = clientes.findIndex((c) => c.id === id);
+  if(posicion === -1) return null;
+  clientes[posicion] = {id, ...cliente};
+  return clientes[posicion];
+}
+
+
+module.exports = { findAll, findById, findByEmail, create, update};
