@@ -25,9 +25,9 @@ async function findAll(filtros = {}) {
     condiciones.push('id IN (?)');
     valores.push(filtros.ids);
   }
-  if(condiciones.length > 0) sql += 'WHERE' + condiciones.join('AND');
+  if(condiciones.length > 0) sql += ' WHERE ' + condiciones.join(' AND ');
   const [filas] = await pool.query(sql + ' ORDER BY id', valores);
-  return filas.map(aClientes)
+  return filas.map(aClientes);
 }
 
 async function findById(id) {

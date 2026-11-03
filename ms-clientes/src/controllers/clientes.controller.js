@@ -16,7 +16,7 @@ function leerId(req) {
 async function listar(req, res) {
   const filtros = { ciudad: req.query.ciudad };
   if(req.query.ids){
-    filtros.ids = string(req.query.ids).split(',').map(Number);
+    filtros.ids = String(req.query.ids).split(',').map(Number);
     if (filtros.ids.some((id) => !Number.isInteger(id) || id <= 0)){
       throw new HttpError(400, 'El id debe ser un entero positivo');
     }
