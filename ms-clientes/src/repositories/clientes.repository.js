@@ -35,6 +35,11 @@ async function findById(id) {
   return filas.length > 0 ? aClientes(filas[0]) : null;
 }
 
+async function findBydoc(documento) {
+  const [filas] = await pool.query('SELECT * FROM clientes WHERE documento = ?',[documento]);
+  return filas.length > 0 ? aClientes(filas[0]) : null;
+}
+
 async function findByEmail(email) {
   const [filas] = await pool.query('SELECT * FROM clientes WHERE email = ?', [email]);
   return filas.length > 0 ? aClientes(filas[0]) : null;
@@ -58,4 +63,4 @@ async function remove(id) {
   return resultado.affectedRows > 0;
 }
 
-module.exports = { findAll, findById, findByEmail, create, update, remove};
+module.exports = { findAll, findById, findByEmail, findBydoc, create, update, remove};

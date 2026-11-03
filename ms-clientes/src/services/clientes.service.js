@@ -19,13 +19,17 @@ async function obtener(id) {
 
 async function crear(datos) {
   const clientesExistentes = await repo.findAll();
-  const errores = validarCliente(datos, clientesExistentes);
+  const errores = validarCliente(datos);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
 
   const cliente = construirCliente(datos);
 
   // Regla de negocio: no puede haber dos clientes con el mismo email
   // (el email es con lo que se inicia sesión). 409 = Conflict.
+  if (await repo.findByEmail(cliente.documento)) {
+    throw new HttpError(409, `Ya existe un cliente con el documento ${cliente.documento}`);
+  }
+
   if (await repo.findByEmail(cliente.email)) {
     throw new HttpError(409, `Ya existe un cliente con el email ${cliente.email}`);
   }
@@ -35,7 +39,7 @@ async function crear(datos) {
 
 async function actualizar(id, datos) {
   const clientesExistentes = await repo.findAll();
-  const errores = await validarCliente(datos, clientesExistentes, id);
+  const errores = await validarCliente(datos);
   if(errores.length > 0) throw new HttpError(400, "Datos inválidos", errores);
 
   const cliente = construirCliente(datos);
@@ -44,10 +48,16 @@ async function actualizar(id, datos) {
   if (otro && otro.id !== id) {
     throw new HttpError(409, `Ya existe un cliente con el email ${cliente.email}`);
   }
+  const otro1 = await repo.findBydoc(cliente.documento);
+  if (otro1 && otro1.id !== id) {
+    throw new HttpError(409, `Ya existe un cliente con el documento ${cliente.documento}`);
+  }
 
   const actualizado = await repo.update(id, cliente);
   if(!actualizado) throw new HttpError(404, `No existe el cliente con id ${id}`);
   return actualizado;
+
+  
 }
 
 
