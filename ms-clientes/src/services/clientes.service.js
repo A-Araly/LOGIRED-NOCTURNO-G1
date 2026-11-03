@@ -26,7 +26,7 @@ async function crear(datos) {
 
   // Regla de negocio: no puede haber dos clientes con el mismo email
   // (el email es con lo que se inicia sesión). 409 = Conflict.
-  if (await repo.findByEmail(cliente.documento)) {
+  if (await repo.findBydoc(cliente.documento)) {
     throw new HttpError(409, `Ya existe un cliente con el documento ${cliente.documento}`);
   }
 

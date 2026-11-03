@@ -18,23 +18,13 @@
 const EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Devuelve una lista de errores de validación (vacía si todo está bien)
-function validarCliente(datos, clientesExistentes = [], idExcluir = null) {
+function validarCliente(datos) {
   const errores = [];
   if (!datos || typeof datos !== 'object') {
     return ['Se esperaba un objeto JSON con los datos del cliente'];
   }
   if (typeof datos.documento !== 'string' || datos.documento.trim() === '') {
     errores.push('documento es obligatorio');
-  } else {
-    const documento = datos.documento.trim();
-
-    const documentoExiste = clientesExistentes.some(
-      (c) => c.documento === documento && c.id !== idExcluir
-    );
-
-    if (documentoExiste) {
-      errores.push('documento ya está registrado');
-    }
   }
   if (!datos.nombre || typeof datos.nombre !== 'string' || datos.nombre.trim() === '') {
     errores.push('nombre es obligatorio');
