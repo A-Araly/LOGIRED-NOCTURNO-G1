@@ -10,7 +10,10 @@ const router = Router();
 router.get('/', controller.listar);      // listar todos los envios
 router.get('/:id', controller.obtener);  // obtener un envio por id
 router.post('/', controller.crear);      // crear un envio
+router.put('/:id', controller.actualizar); // actualizar un envio
+router.delete('/:id', controller.eliminar); // eliminar un envio
 // Taller 2: agregar PUT /:id (actualizar) y DELETE /:id (eliminar)
+
 
 
 

@@ -22,7 +22,7 @@ function estadosValidos() {
 //const EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Devuelve una lista de errores de validación (vacía si todo está bien)
-function validarenvio(datos) {
+function validarEnvio(datos) {
   const errores = [];
   if (!datos || typeof datos !== 'object') {
     return ['Se esperaba un objeto JSON con los datos de envío'];
@@ -52,16 +52,16 @@ function validarenvio(datos) {
 }
 
 // Construye un envío "limpio" solo con los campos permitidos
-function construirenvio(datos) {
+function construirEnvio(datos) {
   return {
-    numero_guia: datos.numero_guia.trim().toLowerCase(),
+    numero_guia: datos.numero_guia.trim() ,
     cliente_id: datos.cliente_id,
     peso_kg: datos.peso_kg,
-    ciudad_destino: datos.ciudad_destino.trim().toLowerCase(),
-    direccion_destino: datos.direccion_destino.trim().toLowerCase(),
+    ciudad_destino: datos.ciudad_destino.trim(),
+    direccion_destino: datos.direccion_destino.trim(),
     estado: datos.estado,
     fecha_registro: new Date().toLocaleDateString('en-CA'), // AAAA-MM-DD en hora local
   };
 }
 
-module.exports = { validarenvio, construirenvio };
+module.exports = { validarEnvio, construirEnvio };

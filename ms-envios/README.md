@@ -43,6 +43,6 @@ Prueben en el navegador: http://localhost:3001/health y http://localhost:3001/en
 | POST | /envios | 201 envio creado · 400 datos inválidos · 409 email repetido |
 
 Ejemplo de cuerpo para POST:
-`{"nombre": "Marta Ríos", "email": "marta.rios@empresa.com", "rol": "despacho"}`
+`{id":3,"numero_guia":"LR-2026-567892","cliente_id":3,"peso_kg":10,"ciudad_destino":"Medellin","direccion_destino":"calle 123","estado":"entregado","fecha_registro":"2024-06-03"}`
 
-Los roles válidos se configuran en el archivo .env (`ROLES=administrador,despacho,flota`).
+Los estados válidos se configuran en el archivo .env (`ESTADO=registrado , en_transito ,entregado),`).
