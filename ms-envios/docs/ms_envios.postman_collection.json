@@ -1,0 +1,553 @@
+{
+  "info": {
+    "name": "ms-envios",
+    "description": "Colección de pruebas de ms-envios (LogiRed S.A.S.), puerto 3003. Ejecutar en orden sobre la base recién cargada con db/schema.sql. La variable base apunta a http://localhost:3003.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "health",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/health",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listar todos - 200",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "filtrar por estado - 200",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Todos en_transito\", function () { pm.response.json().forEach(function (e) { pm.expect(e.estado).to.eql(\"en_transito\"); }); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios?estado=en_transito",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ],
+          "query": [
+            {
+              "key": "estado",
+              "value": "en_transito"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "obtener existente - 200",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios/1",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "obtener inexistente - 404",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios/99",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "99"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "obtener con id no numérico - 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\", function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios/abc",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "abc"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear valido - 201",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });",
+              "pm.collectionVariables.set(\"idCreado\", pm.response.json().id);\npm.test(\"Cabecera Location\", function () { pm.expect(pm.response.headers.has(\"Location\")).to.be.true; });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567900\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear sin datos obligatorios - 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\", function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear con numero de guia repetido - 409",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 409\", function () { pm.response.to.have.status(409); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567900\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear con kg <=0 - 400",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\", function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567901\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 0,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "actualizar existente - 200",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/envios/2",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "2"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567891\",\n  \"cliente_id\": 2,\n  \"peso_kg\": 2,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"carrera 56\",\n  \"estado\": \"en_transito\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "actualizar inexistente - 404",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/envios/99",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "99"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567999\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "actualizar con guia repetida - 409",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 409\", function () { pm.response.to.have.status(409); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/envios/2",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "2"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567890\",\n  \"cliente_id\": 2,\n  \"peso_kg\": 2,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"carrera 56\",\n  \"estado\": \"en_transito\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "eliminar existente - 204",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 204\", function () { pm.response.to.have.status(204); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios/{{idCreado}}",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "{{idCreado}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "eliminar otra vez - 404",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios/{{idCreado}}",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios",
+            "{{idCreado}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:3003"
+    },
+    {
+      "key": "idCreado",
+      "value": ""
+    }
+  ]
+}
