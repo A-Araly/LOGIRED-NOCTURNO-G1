@@ -8,7 +8,8 @@ const router = Router();
 router.get('/', controller.listar);      // listar todos los vehículos
 router.get('/:id', controller.obtener);  // obtener un vehículo por id
 router.post('/', controller.crear);      // crear un vehículo
+router.put('/:id', controller.actualizar); // actualizar un vehículo por id
+router.delete('/:id', controller.eliminar); // eliminar un vehículo por id
 
-// Taller 2: agregar PUT /:id (actualizar) y DELETE /:id (eliminar)
 
 module.exports = router;
