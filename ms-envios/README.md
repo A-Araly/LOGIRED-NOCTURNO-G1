@@ -1,48 +1,67 @@
-# ms-envios · Plantilla del Taller 1 (Módulo 3)
+# ms-envios - Contrato de la API
 
-Redes y Servicios Multimedia · UAO · Microservicio de **envios** de la aplicación,
-con **Node.js + Express** organizado en capas. Es el microservicio común de todos los grupos
-y, en esta versión, la plantilla para construir el suyo: cópienla y adapten **todas** las capas
-a su propia entidad.
-
-Esta es la versión del Taller 1: datos en memoria y tres operaciones. La versión completa
-(MySQL, contraseña cifrada, inicio de sesión y tokens JWT) se entrega en el Taller 3.
+Microservicio de envíos de LogiRed S.A.S. Responsable: Vanessa. Puerto: **3003**.
 
 ## Cómo ejecutarlo
 
-Requisitos: Node.js LTS 22 o superior (`node -v`).
+Requisitos: Node.js 22.9 o superior y MySQL (en XAMPP corre MariaDB).
 
+1. Crear la base de datos y su usuario (como root):
+
+```sql
+CREATE DATABASE envios_db;
+CREATE USER 'envios_user'@'localhost' IDENTIFIED BY 'una-clave-segura';
+GRANT ALL PRIVILEGES ON envios_db.* TO 'envios_user'@'localhost';
 ```
-npm install                 # descarga Express en node_modules
-copy .env.example .env      # en Windows (en Linux/Mac: cp .env.example .env)
-npm run dev                 # inicia y se reinicia solo al guardar cambios
+
+2. Crear la tabla: en la consola `mysql -u root` ejecutar `USE envios_db;` y luego `SOURCE db/schema.sql;`
+3. `npm install`
+4. Copiar `.env.example` como `.env` y ajustar la contraseña de la base de datos.
+5. `npm run dev`
+
+## Recurso: envío
+
+| Campo | Tipo | Obligatorio | Regla |
+|---|---|---|---|
+| id | entero | No (lo asigna el servidor) | Único |
+| numero_guia | texto | Sí | Formato LR-AAAA-NNNNNN, único |
+| cliente_id | entero | Sí | Entero positivo |
+| peso_kg | número | Sí | Mayor que 0 |
+| ciudad_destino | texto | Sí | No vacío |
+| direccion_destino | texto | Sí | No vacío |
+| estado | texto | Sí | registrado, en_transito o entregado |
+| fecha_registro | fecha | No (la pone el servidor) | AAAA-MM-DD, no cambia al actualizar |
+
+## Endpoints
+
+| Operación | Método | URI | Cuerpo | Respuesta exitosa | Errores posibles |
+|---|---|---|---|---|---|
+| Listar | GET | /envios | N/A | 200 + arreglo | N/A |
+| Filtrar | GET | /envios?estado=en_transito | N/A | 200 + arreglo filtrado | N/A |
+| Obtener | GET | /envios/:id | N/A | 200 + objeto | 400 id inválido, 404 |
+| Crear | POST | /envios | JSON sin id ni fecha | 201 + objeto + cabecera Location | 400, 409 |
+| Actualizar | PUT | /envios/:id | JSON completo sin id | 200 + objeto actualizado | 400, 404, 409 |
+| Eliminar | DELETE | /envios/:id | N/A | 204 sin cuerpo | 400, 404 |
+
+Ejemplo para crear un envio :
+
+```json
+{ "numero_guia": "LR-2026-567893", "cliente_id": 4, "peso_kg": 6, "ciudad_destino": "Cali", "direccion_destino": "calle 143", "estado": "registrado" }
 ```
 
-Prueben en el navegador: http://localhost:3001/health y http://localhost:3001/envios
+Errores: `{ "error": "mensaje", "detalles": ["..."] }` (detalles solo en errores de validación).
 
-## Capas
+Reglas de negocio:
+- El número de guía es único: crear o actualizar con una guía de otro envío responde 409.
+- El peso debe ser mayor que 0.
+- La fecha de registro la asigna el servidor al crear y no cambia al actualizar.
 
-| Archivo | Capa | Responsabilidad |
-|---|---|---|
-| src/index.js | Arranque | Lee PORT y HOST y pone el servidor a escuchar |
-| src/app.js | Configuración | Middlewares, /health, montaje de rutas, manejo de errores |
-| src/routes/envios.routes.js | Presentación | Método HTTP + URI → función del controlador |
-| src/controllers/envios.controller.js | Presentación | Lee la petición, llama al servicio, arma la respuesta |
-| src/services/envios.service.js | Lógica de negocio | Validaciones y reglas (email único); no conoce HTTP ni la base de datos |
-| src/repositories/envios.repository.js | Acceso a datos | Guarda y consulta (en memoria en el Taller 1) |
-| src/models/envio.js | Modelo | Atributos de la entidad y su validación |
-| src/utils/http-error.js | Utilidad | Error con código de estado HTTP |
+## Relaciones
 
-## Endpoints (Taller 1)
+**Consulto a:** pendiente (semana 2: ms-clientes, para validar que `cliente_id` exista).
 
-| Método | URI | Respuesta |
-|---|---|---|
-| GET | /health | 200 `{"servicio":"ms-envios","estado":"ok"}` |
-| GET | /envios | 200 arreglo de envios |
-| GET | /envios/:id | 200 envio · 400 id inválido · 404 no existe |
-| POST | /envios | 201 envio creado · 400 datos inválidos · 409 email repetido |
+**Me consultan:** pendiente (semana 2).
 
-Ejemplo de cuerpo para POST:
-`{id":3,"numero_guia":"LR-2026-567892","cliente_id":3,"peso_kg":10,"ciudad_destino":"Medellin","direccion_destino":"calle 123","estado":"entregado","fecha_registro":"2024-06-03"}`
+## Pruebas
 
-Los estados válidos se configuran en el archivo .env (`ESTADO=registrado , en_transito ,entregado),`).
+Colección de Postman en `docs/ms-envios.postman_collection.json`.
