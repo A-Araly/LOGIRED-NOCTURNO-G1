@@ -31,7 +31,7 @@ function validarConductor(datos) {
   if (!datos.nombre || typeof datos.nombre !== 'string' || datos.nombre.trim() === '') {
     errores.push('nombre es obligatorio');
   }
-  if (typeof datos.cedula !== 'string' || datos.cedula.trim() === '') {
+  if (typeof datos.cedula !== 'number' || datos.cedula.trim() === '') {
     errores.push('cedula es obligatoria');
   }
   
