@@ -7,8 +7,8 @@ const repo = require('../repositories/conductores.repository');
 const { validarConductor, construirConductor } = require('../models/conductor');
 const HttpError = require('../utils/http-error');
 
-async function listar() {
-  return repo.findAll();
+async function listar(filtros) {
+  return repo.findAll(filtros);
 }
 
 async function obtener(id) {
@@ -33,4 +33,27 @@ async function crear(datos) {
   return repo.create(conductor);
 }
 
-module.exports = { listar, obtener, crear };
+async function actualizar(id, datos) {
+  const errores = validarConductor(datos);
+  if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
+
+  const conductor = construirConductor(datos);
+
+  // Regla de negocio: no puede haber dos conductores con la misma cédula
+  const existente = await repo.findByCedula(conductor.cedula);
+  if (existente && existente.id !== id) {
+    throw new HttpError(409, `Ya existe un conductor con la cédula ${conductor.cedula}`);
+  }
+
+  const actualizado = await repo.update(id, conductor);
+  if (!actualizado) throw new HttpError(404, `No existe el conductor con id ${id}`);
+
+  return actualizado;
+}
+
+async function eliminar(id) {
+  const eliminado = await repo.remove(id);
+  if (!eliminado) throw new HttpError(404, `No existe el conductor con id ${id}`);
+}
+
+module.exports = { listar, obtener, crear, actualizar, eliminar };

@@ -13,8 +13,11 @@ const conductores = [
 ];
 let siguienteId = 4;
 
-async function findAll() {
-  return conductores;
+async function findAll(filtros) {
+  return conductores.filter((c) => 
+(!filtros.sede || c.sede === filtros.sede) &&
+(!filtros.ids || filtros.ids.includes(c.id))
+  )
 }
 
 async function findById(id) {
@@ -31,4 +34,22 @@ async function create(conductor) {
   return nuevo;
 }
 
-module.exports = { findAll, findById, findByCedula, create };
+async function update(id, conductor) {
+  const posicion = conductores.findIndex((c) => c.id === id);
+  if (posicion === -1) {
+    return null;
+  }
+  conductores[posicion] = { ...conductor, id };
+  return conductores[posicion];
+}
+
+async function remove(id) {
+  const posicion = conductores.findIndex((c) => c.id === id);
+  if (posicion === -1) {
+    return false;
+  }
+  conductores.splice(posicion, 1);
+  return true;
+}
+
+module.exports = { findAll, findById, findByCedula, create, update, remove };
