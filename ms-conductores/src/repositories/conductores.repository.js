@@ -10,7 +10,7 @@ const pool = require('../db');
   
 // MySQL guarda BOOLEAN como 0/1: el repositorio lo traduce al formato del contrato 
 function aConductor(fila) { 
-  return { ...fila, activo: Boolean(fila.activo) };
+  return { ...fila};
 }
 
 async function findAll(filtros) {

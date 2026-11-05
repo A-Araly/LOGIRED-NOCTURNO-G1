@@ -5,7 +5,7 @@ CREATE TABLE conductores (
   id      INT AUTO_INCREMENT PRIMARY KEY, 
   nombre  VARCHAR(100) NOT NULL, 
   cedula  VARCHAR(20) NOT NULL UNIQUE, 
-  categoria VARCHAR(10) NOT NULL, 
+  categoria VARCHAR(10), 
   sede    VARCHAR(100) NOT NULL
 ); 
   
