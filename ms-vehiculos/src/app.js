@@ -2,11 +2,13 @@
 // Configuración de la aplicación Express.
 // Aquí se registran los middlewares, las rutas y el manejo de errores.
 // =====================================================================
+const cors = require('cors');
 const express = require('express');
 const vehiculosRoutes = require('./routes/vehiculos.routes');
 
 const app = express();
 
+app.use(cors());
 // Middleware: convierte el cuerpo JSON de la petición en un objeto (req.body)
 app.use(express.json());
 

@@ -5,8 +5,8 @@ const repo = require('../repositories/vehiculos.repository');
 const { validarVehiculo, construirVehiculo } = require('../models/vehiculo');
 const HttpError = require('../utils/http-error');
 
-async function listar() {
-  return repo.findAll();
+async function listar(filtros) {
+  return repo.findAll(filtros);
 }
 
 async function obtener(id) {
@@ -26,9 +26,29 @@ async function crear(datos) {
     throw new HttpError(409, `Ya existe un vehículo con la placa ${vehiculo.placa}`);
   }
 
-  // Taller 3: aquí se validará que conductor_id exista en ms-conductores
 
   return repo.create(vehiculo);
 }
 
-module.exports = { listar, obtener, crear };
+async function actualizar(id, datos) {
+  const errores = validarVehiculo(datos);
+  if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
+  const vehiculo = construirVehiculo(datos);
+
+  const existente = await repo.findById(id);
+  if (!existente) throw new HttpError(404, `No existe el vehículo con id ${id}`);
+
+  // Regla de negocio: la placa no puede ser de otro vehículo. 409 = Conflict.
+  const otro = await repo.findByPlaca(vehiculo.placa);
+  if (otro && otro.id !== id) {
+    throw new HttpError(409, `Ya existe un vehículo con la placa ${vehiculo.placa}`);
+  }
+
+  return repo.update(id, vehiculo);
+}
+
+  async function eliminar(id) {
+    const eliminado = await repo.remove(id);
+    if (!eliminado) throw new HttpError(404, `No existe el vehículo con id ${id}`);
+  }
+module.exports = { listar, obtener, crear, actualizar, eliminar };
