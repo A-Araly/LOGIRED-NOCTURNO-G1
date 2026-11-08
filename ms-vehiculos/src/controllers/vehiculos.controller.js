@@ -12,15 +12,17 @@ function leerId(req) {
 
 // GET /vehiculos
 async function listar(req, res) {
-  const filtros = {rol: req.query.rol};
+  const filtros = {};
+  if (req.query.estado) filtros.estado = req.query.estado;
+  if (req.query.tipo) filtros.tipo = req.query.tipo;
   if (req.query.ids) {
     filtros.ids = String(req.query.ids).split(',').map(Number);
     if (filtros.ids.some((id) => !Number.isInteger(id) || id <= 0)) {
       throw new HttpError(400, 'Los ids deben ser enteros positivos');
+    }
   }
-}
 
-  const vehiculos = await service.listar();
+  const vehiculos = await service.listar(filtros);
   res.status(200).json(vehiculos);
 }
 

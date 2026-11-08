@@ -30,19 +30,21 @@ async function crear(datos) {
   return repo.create(vehiculo);
 }
 
-async function actualizar(id, vehiculo) {
-  const errores = validarVehiculo(vehiculo);
-  if (errores.length > 0) throw new HttpError(400, 'Datos invalidos', errores);
-  const vehiculoActualizado = construirVehiculo(vehiculo);
+async function actualizar(id, datos) {
+  const errores = validarVehiculo(datos);
+  if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
+  const vehiculo = construirVehiculo(datos);
 
-  const otro = await repo.update(id, vehiculoActualizado);
+  const existente = await repo.findById(id);
+  if (!existente) throw new HttpError(404, `No existe el vehículo con id ${id}`);
+
+  // Regla de negocio: la placa no puede ser de otro vehículo. 409 = Conflict.
+  const otro = await repo.findByPlaca(vehiculo.placa);
   if (otro && otro.id !== id) {
-    throw new HttpError(409, `Ya existe un vehículo con la placa ${vehiculoActualizado.placa}`);
+    throw new HttpError(409, `Ya existe un vehículo con la placa ${vehiculo.placa}`);
   }
 
-  const actualizado = await repo.update(id, vehiculoActualizado);
-  if (!actualizado) throw new HttpError(404, `No existe el vehículo con id ${id}`);
-  return actualizado;
+  return repo.update(id, vehiculo);
 }
 
   async function eliminar(id) {
