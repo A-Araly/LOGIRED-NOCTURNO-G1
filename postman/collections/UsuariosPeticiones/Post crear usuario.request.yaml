@@ -1,0 +1,20 @@
+$kind: http-request
+description: ""
+url: http://localhost:3001/usuarios
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"id\": 4,\r
+
+    \  \"nombre\": \"Ara\",\r
+
+    \  \"email\": \"Ara@empresa.com\",\r
+
+    \  \"rol\": \"administrador\",\r
+
+    \  \"activo\": true\r
+
+    }"
+order: 2000
