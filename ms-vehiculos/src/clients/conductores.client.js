@@ -31,4 +31,39 @@ async function existeConductor(id, token) {
   }
 }
 
-module.exports = { existeConductor };
+// Consultar varios conductores en una sola petición
+async function conductoresPorIds(ids, token) {
+  if (ids.length === 0) return new Map();
+
+  try {
+    const respuesta = await fetch(
+      `${BASE_URL}/conductores?ids=${ids.join(',')}`,
+      {
+        headers: {
+          Authorization: token
+        }
+      }
+    );
+
+    if (!respuesta.ok) {
+      return null;
+    }
+
+    const conductores = await respuesta.json();
+
+    return new Map(
+      conductores.map((c) => [
+        c.id,
+        {
+          id: c.id,
+          nombre: c.nombre
+        }
+      ])
+    );
+
+  } catch (error) {
+    return null;
+  }
+}
+
+module.exports = { existeConductor, conductoresPorIds };

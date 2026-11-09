@@ -15,8 +15,10 @@ async function validarConductor(conductorId, token) {
   }
 
   try {
+    const conductoresUrl = process.env.CONDUCTORES_URL;
+
     const respuesta = await fetch(
-      `http://localhost:3004/conductores/${conductorId}`,
+      `${conductoresUrl}/conductores/${conductorId}`,
       {
         headers: {
           Authorization: token
