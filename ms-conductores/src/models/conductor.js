@@ -31,7 +31,7 @@ function validarConductor(datos) {
   if (!datos.nombre || typeof datos.nombre !== 'string' || datos.nombre.trim() === '') {
     errores.push('nombre es obligatorio');
   }
-  if (typeof datos.cedula !== 'string' || datos.cedula.trim() === '') {
+  if (typeof datos.cedula !== 'number') {
     errores.push('cedula es obligatoria');
   }
   
@@ -47,7 +47,7 @@ function validarConductor(datos) {
 function construirConductor(datos) {
   return {
     nombre: datos.nombre.trim(),
-    cedula: datos.cedula.trim(),
+    cedula: datos.cedula,
     categoria: datos.categoria.trim(),
     sede: datos.sede,
 
