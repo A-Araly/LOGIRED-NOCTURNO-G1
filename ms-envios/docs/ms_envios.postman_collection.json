@@ -65,6 +65,60 @@
       "response": []
     },
     {
+      "name": "flota hace GET - 200",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0o71}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "despacho hace GET - 200",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0o71}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "listar con ms-clientes detenido - 200",
       "request": {
         "auth": {
@@ -123,33 +177,6 @@
       "request": {
         "auth": {
           "type": "noauth"
-        },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base}}/envios",
-          "host": [
-            "{{base}}"
-          ],
-          "path": [
-            "envios"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "flota hace GET - 200",
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "{{json_web_token_0o71}}",
-              "type": "string"
-            }
-          ]
         },
         "method": "GET",
         "header": [],
@@ -318,15 +345,67 @@
       "response": []
     },
     {
-      "name": "Crear valido - 201",
+      "name": "flota hace POST - 403",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "despacho crea envío - 201",
       "event": [
         {
           "listen": "test",
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });",
-              "pm.collectionVariables.set(\"idCreado\", pm.response.json().id);\npm.test(\"Cabecera Location\", function () { pm.expect(pm.response.headers.has(\"Location\")).to.be.true; });"
+              "pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });\npm.collectionVariables.set(\"idCreado\", pm.response.json().id);\npm.test(\"Cabecera Location\", function () { pm.expect(pm.response.headers.has(\"Location\")).to.be.true; });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567900\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin crea envío - 201",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });\npm.collectionVariables.set(\"idCreado\", pm.response.json().id);\npm.test(\"Cabecera Location\", function () { pm.expect(pm.response.headers.has(\"Location\")).to.be.true; });"
             ]
           }
         }
@@ -482,17 +561,6 @@
           "path": [
             "envios"
           ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "flota hace POST - 403",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": ""
         }
       },
       "response": []
