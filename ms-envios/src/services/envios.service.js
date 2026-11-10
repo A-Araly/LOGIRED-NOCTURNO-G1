@@ -6,6 +6,14 @@
 const repo = require('../repositories/envios.repository');
 const { validarEnvio, construirEnvio } = require('../models/envio');
 const HttpError = require('../utils/http-error');
+const clientesClient = require('../clients/clientes.client');
+
+// Relación: el cliente referenciado debe existir en ms-clientes
+async function validarCliente(clienteId, token) {
+  if (!(await clientesClient.existeCliente(clienteId, token))) {
+    throw new HttpError(400, `No existe el cliente con id ${clienteId}`);
+  }
+}
 
 async function listar(filtros) {
   return repo.findAll(filtros);
@@ -17,7 +25,7 @@ async function obtener(id) {
   return envio;
 }
 
-async function crear(datos) {
+async function crear(datos, token) {
   const errores = validarEnvio(datos);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
 
@@ -29,10 +37,11 @@ async function crear(datos) {
     throw new HttpError(409, `Ya existe un envio con el numero de guia ${envio.numero_guia}`);
   }
 
+  await validarCliente(envio.cliente_id, token);
   return repo.create(envio);
 }
 
-async function actualizar(id, datos) {
+async function actualizar(id, datos, token) {
   const errores = validarEnvio(datos);
   if (errores.length > 0) throw new HttpError(400, `Datos inválidos `, errores);
 
@@ -42,15 +51,16 @@ async function actualizar(id, datos) {
   if (duplicado && duplicado.id !== id) {
     throw new HttpError(409, `Ya existe un envio con el numero de guia ${envio.numero_guia}`);
   }
-  const actualizado= await repo.update(id, envio);
-  if (!actualizado) throw new HttpError(404,`No existe el envio con id ${id}`);
+
+  await validarCliente(envio.cliente_id, token);
+  const actualizado = await repo.update(id, envio);
+  if (!actualizado) throw new HttpError(404, `No existe el envio con id ${id}`);
   return actualizado;
 }
 
 async function eliminar(id) {
   const eliminado = await repo.remove(id);
   if (!eliminado) throw new HttpError(404, `No existe el envio con id ${id}`);
-
 }
 
 module.exports = { listar, obtener, crear, actualizar, eliminar };
