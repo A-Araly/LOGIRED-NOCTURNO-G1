@@ -10,9 +10,6 @@ const router = Router();
 
 router.use(verificarToken);
 
-router.get('/me', controller.miPerfil);                       // cualquier rol: sus datos
-router.get('/:id', propioOAdministrador, controller.obtener);  // propio o administrador
-
 router.get('/', controller.listar);
 router.post('/', requiereRol("administrador", "despacho"),controller.crear);
 router.put('/:id', requiereRol("administrador", "despacho"), controller.actualizar);
