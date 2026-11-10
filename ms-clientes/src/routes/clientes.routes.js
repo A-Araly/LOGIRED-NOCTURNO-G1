@@ -4,6 +4,7 @@
 // =====================================================================
 const { Router } = require('express');
 const controller = require('../controllers/clientes.controller');
+const { verificarToken, requiereRol } = require('../middlewares/auth');
 
 const router = Router();
 
