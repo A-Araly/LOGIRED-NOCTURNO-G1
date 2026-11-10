@@ -11,6 +11,7 @@ const router = Router();
 router.use(verificarToken);
 
 router.get('/', controller.listar);
+router.get('/:id', controller.obtener);
 router.post('/', requiereRol("administrador", "despacho"),controller.crear);
 router.put('/:id', requiereRol("administrador", "despacho"), controller.actualizar);
 router.delete('/:id', requiereRol("administrador", "despacho"), controller.eliminar);
