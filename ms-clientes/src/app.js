@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use((req,res, next) => {
-  console.log(`${new Date.toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
+  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
   next();
 });
 
