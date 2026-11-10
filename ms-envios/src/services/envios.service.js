@@ -15,14 +15,32 @@ async function validarCliente(clienteId, token) {
   }
 }
 
-async function listar(filtros) {
-  return repo.findAll(filtros);
+// Composición: agrega a cada envío los datos del cliente.
+// Hace UNA sola consulta a ms-clientes para todos los envíos.
+async function componer(envios, token) {
+  const lista = Array.isArray(envios) ? envios : [envios];
+  const ids = [...new Set(lista.map((e) => e.cliente_id))];
+  const clientes = await clientesClient.clientesPorIds(ids, token);
+
+  const compuestos = lista.map((e) => {
+    if (clientes === null) {
+      return { ...e, cliente: null, aviso: 'ms-clientes no está disponible' };
+    }
+    return { ...e, cliente: clientes.get(e.cliente_id) || null };
+  });
+
+  return Array.isArray(envios) ? compuestos : compuestos[0];
 }
 
-async function obtener(id) {
+async function listar(filtros, token) {
+  const envios = await repo.findAll(filtros);
+  return componer(envios, token);
+}
+
+async function obtener(id, token) {
   const envio = await repo.findById(id);
   if (!envio) throw new HttpError(404, `No existe el envio con id ${id}`);
-  return envio;
+  return componer(envio, token);
 }
 
 async function crear(datos, token) {
@@ -38,7 +56,8 @@ async function crear(datos, token) {
   }
 
   await validarCliente(envio.cliente_id, token);
-  return repo.create(envio);
+  const creado = await repo.create(envio);
+  return componer(creado, token);
 }
 
 async function actualizar(id, datos, token) {
@@ -55,7 +74,7 @@ async function actualizar(id, datos, token) {
   await validarCliente(envio.cliente_id, token);
   const actualizado = await repo.update(id, envio);
   if (!actualizado) throw new HttpError(404, `No existe el envio con id ${id}`);
-  return actualizado;
+  return componer(actualizado, token);
 }
 
 async function eliminar(id) {

@@ -15,19 +15,12 @@ function leerId(req) {
 // GET/envios, GET/envios?estado=registrado, GET/envios?estado=en_transito, GET/envios?estado=entregado
 async function listar(req, res) {
   const filtros = { estado: req.query.estado };  // { estado: 'registrado' } o { estado: 'en_transito' } o { estado: 'entregado' }
-  if (req.query.ids) {
-    filtros.ids = String(req.query.ids).split(',').map(Number);
-    if (filtros.ids.some((id) => !Number.isInteger(id) || id <= 0)) {
-      throw new HttpError(400, 'ids debe ser una lista de enteros positivos separados por comas');
-    }
-  }
-  const envios = await service.listar(filtros);
+  const envios = await service.listar(filtros, req.headers.authorization);
   res.status(200).json(envios);
 }
-
 // GET /envios/:id
 async function obtener(req, res) {
-  const envio = await service.obtener(leerId(req));
+  const envio = await service.obtener(leerId(req), req.headers.authorization);
   res.status(200).json(envio);
 }
 
