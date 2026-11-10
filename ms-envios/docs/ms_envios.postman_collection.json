@@ -1,8 +1,11 @@
 {
   "info": {
+    "_postman_id": "d269ac6d-455e-48bb-b1df-5068738e9a33",
     "name": "ms-envios",
     "description": "Colección de pruebas de ms-envios (LogiRed S.A.S.), puerto 3003. Ejecutar en orden sobre la base recién cargada con db/schema.sql. La variable base apunta a http://localhost:3003.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53959956",
+    "_collection_link": "https://go.postman.co/collection/53959956-d269ac6d-455e-48bb-b1df-5068738e9a33?source=collection_link"
   },
   "item": [
     {
@@ -47,6 +50,107 @@
         }
       ],
       "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listar con ms-clientes detenido - 200",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0gf0}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listar con token alterado - 401",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "hfer-jeuebeow",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listar sin token - 401",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "flota hace GET - 200",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0o71}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [],
         "url": {
@@ -110,6 +214,16 @@
         }
       ],
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0gf0}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [],
         "url": {
@@ -139,16 +253,26 @@
         }
       ],
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0gf0}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{base}}/envios/99",
+          "raw": "{{base}}/envios/98",
           "host": [
             "{{base}}"
           ],
           "path": [
             "envios",
-            "99"
+            "98"
           ]
         }
       },
@@ -168,6 +292,16 @@
         }
       ],
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0gf0}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [],
         "url": {
@@ -205,15 +339,6 @@
             "value": "application/json"
           }
         ],
-        "url": {
-          "raw": "{{base}}/envios",
-          "host": [
-            "{{base}}"
-          ],
-          "path": [
-            "envios"
-          ]
-        },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"numero_guia\": \"LR-2026-567900\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
@@ -222,6 +347,15 @@
               "language": "json"
             }
           }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
         }
       },
       "response": []
@@ -247,15 +381,6 @@
             "value": "application/json"
           }
         ],
-        "url": {
-          "raw": "{{base}}/envios",
-          "host": [
-            "{{base}}"
-          ],
-          "path": [
-            "envios"
-          ]
-        },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
@@ -264,6 +389,15 @@
               "language": "json"
             }
           }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
         }
       },
       "response": []
@@ -289,15 +423,6 @@
             "value": "application/json"
           }
         ],
-        "url": {
-          "raw": "{{base}}/envios",
-          "host": [
-            "{{base}}"
-          ],
-          "path": [
-            "envios"
-          ]
-        },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"numero_guia\": \"LR-2026-567900\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
@@ -306,6 +431,15 @@
               "language": "json"
             }
           }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
         }
       },
       "response": []
@@ -331,15 +465,6 @@
             "value": "application/json"
           }
         ],
-        "url": {
-          "raw": "{{base}}/envios",
-          "host": [
-            "{{base}}"
-          ],
-          "path": [
-            "envios"
-          ]
-        },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"numero_guia\": \"LR-2026-567901\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 0,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
@@ -348,6 +473,134 @@
               "language": "json"
             }
           }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "flota hace POST - 403",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "crear con cliente que existe -201",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0gf0}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"numero_guia\": \"LR-2026-700001\",\r\n  \"cliente_id\": 1,\r\n  \"peso_kg\": 3,\r\n  \"ciudad_destino\": \"Cali\",\r\n  \"direccion_destino\": \"calle 10\",\r\n  \"estado\": \"registrado\",\r\n  \"fecha_registro\": \"2026-11-10\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "crear con ms-clientes detenido - 503",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0gf0}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"numero_guia\": \"LR-2026-700087\",\r\n  \"cliente_id\": 1,\r\n  \"peso_kg\": 3,\r\n  \"ciudad_destino\": \"Cali\",\r\n  \"direccion_destino\": \"calle 10\",\r\n  \"estado\": \"registrado\",\r\n  \"fecha_registro\": \"2026-11-10\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "crear con cliente inexistente - 400",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0gf0}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"numero_guia\": \"LR-2026-700002\",\r\n  \"cliente_id\": 11,\r\n  \"peso_kg\": 3,\r\n  \"ciudad_destino\": \"Cali\",\r\n  \"direccion_destino\": \"calle 10\",\r\n  \"estado\": \"registrado\",\r\n  \"fecha_registro\": \"2026-11-10\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/envios",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "envios"
+          ]
         }
       },
       "response": []
@@ -373,6 +626,15 @@
             "value": "application/json"
           }
         ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567891\",\n  \"cliente_id\": 2,\n  \"peso_kg\": 2,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"carrera 56\",\n  \"estado\": \"en_transito\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
           "raw": "{{base}}/envios/2",
           "host": [
@@ -382,15 +644,6 @@
             "envios",
             "2"
           ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"numero_guia\": \"LR-2026-567891\",\n  \"cliente_id\": 2,\n  \"peso_kg\": 2,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"carrera 56\",\n  \"estado\": \"en_transito\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
         }
       },
       "response": []
@@ -416,6 +669,15 @@
             "value": "application/json"
           }
         ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567999\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
           "raw": "{{base}}/envios/99",
           "host": [
@@ -425,15 +687,6 @@
             "envios",
             "99"
           ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"numero_guia\": \"LR-2026-567999\",\n  \"cliente_id\": 4,\n  \"peso_kg\": 6,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"calle 143\",\n  \"estado\": \"registrado\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
         }
       },
       "response": []
@@ -459,6 +712,15 @@
             "value": "application/json"
           }
         ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numero_guia\": \"LR-2026-567890\",\n  \"cliente_id\": 2,\n  \"peso_kg\": 2,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"carrera 56\",\n  \"estado\": \"en_transito\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
           "raw": "{{base}}/envios/2",
           "host": [
@@ -468,15 +730,6 @@
             "envios",
             "2"
           ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"numero_guia\": \"LR-2026-567890\",\n  \"cliente_id\": 2,\n  \"peso_kg\": 2,\n  \"ciudad_destino\": \"Cali\",\n  \"direccion_destino\": \"carrera 56\",\n  \"estado\": \"en_transito\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
         }
       },
       "response": []
@@ -548,6 +801,22 @@
     {
       "key": "idCreado",
       "value": ""
+    },
+    {
+      "key": "token_flota",
+      "secret": true
+    },
+    {
+      "key": "token",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0o71",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0gf0",
+      "secret": true
     }
   ]
 }
