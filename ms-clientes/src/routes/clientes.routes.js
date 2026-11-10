@@ -7,12 +7,14 @@ const controller = require('../controllers/clientes.controller');
 
 const router = Router();
 
-router.get('/', controller.listar);      // listar todos los clientes
-router.get('/:id', controller.obtener);  // obtener un cliente por id
-router.post('/', controller.crear);      // crear un cliente
-router.put("/:id", controller.actualizar);
-router.delete("/:id", controller.eliminar);
+router.use(verificarToken);
 
-// Taller 2: agregar PUT /:id (actualizar) y DELETE /:id (eliminar)
+router.get('/me', controller.miPerfil);                       // cualquier rol: sus datos
+router.get('/:id', propioOAdministrador, controller.obtener);  // propio o administrador
+
+router.get('/', controller.listar);
+router.post('/', requiereRol("administrador", "despacho"),controller.crear);
+router.put('/:id', requiereRol("administrador", "despacho"), controller.actualizar);
+router.delete('/:id', requiereRol("administrador", "despacho"), controller.eliminar);
 
 module.exports = router;

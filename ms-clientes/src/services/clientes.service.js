@@ -44,6 +44,9 @@ async function actualizar(id, datos) {
 
   const cliente = construirCliente(datos);
 
+  const actualizado = await repo.update(id, cliente);
+  if(!actualizado) throw new HttpError(404, `No existe el cliente con id ${id}`);
+
   const otro = await repo.findByEmail(cliente.email);
   if (otro && otro.id !== id) {
     throw new HttpError(409, `Ya existe un cliente con el email ${cliente.email}`);
@@ -52,9 +55,6 @@ async function actualizar(id, datos) {
   if (otro1 && otro1.id !== id) {
     throw new HttpError(409, `Ya existe un cliente con el documento ${cliente.documento}`);
   }
-
-  const actualizado = await repo.update(id, cliente);
-  if(!actualizado) throw new HttpError(404, `No existe el cliente con id ${id}`);
   return actualizado;
 
   
