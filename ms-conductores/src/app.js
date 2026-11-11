@@ -11,14 +11,11 @@ const app = express();
 app.use(express.json());
 
 // Registro: muestra en la terminal cada petición que llega​
+app.use((req, res, next) => {
+  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
+  next();
+});
 
-   app.use((req, res, next) => {​
-
-  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);​
-
-  next();​
-
-});​
 
 // Endpoint de salud: permite verificar que el microservicio está vivo
 app.get('/health', (req, res) => {
