@@ -9,8 +9,15 @@ const vehiculosRoutes = require('./routes/vehiculos.routes');
 const app = express();
 
 app.use(cors());
+
 // Middleware: convierte el cuerpo JSON de la petición en un objeto (req.body)
 app.use(express.json());
+
+// Registro: muestra en la terminal cada petición que llega
+app.use((req, res, next) => {
+  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
+  next();
+});
 
 // Endpoint de salud: permite verificar que el microservicio está vivo
 app.get('/health', (req, res) => {

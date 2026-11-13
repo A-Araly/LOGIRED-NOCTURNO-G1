@@ -22,40 +22,29 @@ async function listar(req, res) {
     }
   }
 
-  const vehiculos = await service.listar(filtros);
+  const vehiculos = await service.listar(filtros, req.headers.authorization);
   res.status(200).json(vehiculos);
 }
 
 // GET /vehiculos/:id
 async function obtener(req, res) {
-  const vehiculo = await service.obtener(leerId(req));
+  const vehiculo = await service.obtener(leerId(req), req.headers.authorization);
   res.status(200).json(vehiculo);
 }
 
 // POST /vehiculos
-// POST /vehiculos
 async function crear(req, res) {
-  const nuevo = await service.crear(
-    req.body,
-    req.headers.authorization
-  );
-
+  const nuevo = await service.crear(req.body, req.headers.authorization);
   res.status(201).location(`${req.baseUrl}/${nuevo.id}`).json(nuevo);
 }
 
-// Actualizar
 // PUT /vehiculos/:id
 async function actualizar(req, res) {
-  const actualizado = await service.actualizar(
-    leerId(req),
-    req.body,
-    req.headers.authorization
-  );
-
+  const actualizado = await service.actualizar(leerId(req), req.body, req.headers.authorization);
   res.status(200).json(actualizado);
 }
 
-//Eliminar
+// DELETE /vehiculos/:id
 async function eliminar(req, res) {
   await service.eliminar(leerId(req));
   res.status(204).send();

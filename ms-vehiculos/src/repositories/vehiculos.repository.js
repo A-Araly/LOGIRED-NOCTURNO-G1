@@ -5,8 +5,8 @@
 const pool = require('../db');
 
 //MySQL guarda BOOLEAN 
-function aVehiculos(fila){
-  return {...fila, activo: Boolean(fila.activo)};
+function aVehiculos(fila) {
+  return { ...fila };
 }
 
 async function findAll(filtros = {}) {

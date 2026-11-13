@@ -1,56 +1,52 @@
-
 // CAPA DE SERVICIO (lógica de negocio)
 // Aplica las reglas del negocio y las validaciones.
 // No sabe nada de HTTP (req/res) ni de cómo se guardan los datos.
 
 const repo = require('../repositories/vehiculos.repository');
+const conductoresClient = require('../clients/conductores.client');
 const { validarVehiculo, construirVehiculo } = require('../models/vehiculo');
 const HttpError = require('../utils/http-error');
 
-// Validar que el conductor exista en ms-conductores
+// Relación: el conductor referenciado debe existir en ms-conductores.
+// El cliente lanza 503 si ms-conductores no responde.
 async function validarConductor(conductorId, token) {
-  // Si no tiene conductor asignado, no necesita validación
-  if (conductorId === null || conductorId === undefined) {
-    return;
+  if (conductorId === null || conductorId === undefined) return;
+
+  if (!(await conductoresClient.existeConductor(conductorId, token))) {
+    throw new HttpError(400, `No existe el conductor con id ${conductorId}`);
   }
+}
 
-  try {
-    const conductoresUrl = process.env.CONDUCTORES_URL;
+// COMPOSICIÓN: agrega a cada vehículo su objeto conductor
+// con UNA sola consulta a ms-conductores (?ids=)
+async function componer(vehiculos, token) {
+  const ids = [...new Set(
+    vehiculos.map((v) => v.conductor_id).filter((id) => id !== null && id !== undefined)
+  )];
 
-    const respuesta = await fetch(
-      `${conductoresUrl}/conductores/${conductorId}`,
-      {
-        headers: {
-          Authorization: token
-        }
-      }
+  const conductores = await conductoresClient.conductoresPorIds(ids, token);
+
+  // Degradación controlada: ms-conductores caído → se muestra el vehículo igual
+  if (!conductores) {
+    return vehiculos.map((v) =>
+      v.conductor_id === null || v.conductor_id === undefined
+        ? { ...v, conductor: null }
+        : { ...v, conductor: null, aviso: 'ms-conductores no disponible' }
     );
-
-    if (respuesta.status === 404) {
-      throw new HttpError(400, 'El conductor indicado no existe');
-    }
-
-    if (!respuesta.ok) {
-      throw new HttpError(503, 'No fue posible validar el conductor');
-    }
-
-  } catch (error) {
-    if (error instanceof HttpError) {
-      throw error;
-    }
-
-    throw new HttpError(503, 'El servicio de conductores no está disponible');
   }
+
+  return vehiculos.map((v) => ({ ...v, conductor: conductores.get(v.conductor_id) || null }));
 }
 
-async function listar(filtros) {
-  return repo.findAll(filtros);
+async function listar(filtros, token) {
+  return componer(await repo.findAll(filtros), token);
 }
 
-async function obtener(id) {
+async function obtener(id, token) {
   const vehiculo = await repo.findById(id);
   if (!vehiculo) throw new HttpError(404, `No existe el vehículo con id ${id}`);
-  return vehiculo;
+  const [compuesto] = await componer([vehiculo], token);
+  return compuesto;
 }
 
 async function crear(datos, token) {
@@ -67,7 +63,9 @@ async function crear(datos, token) {
     throw new HttpError(409, `Ya existe un vehículo con la placa ${vehiculo.placa}`);
   }
 
-  return repo.create(vehiculo);
+  const nuevo = await repo.create(vehiculo);
+  const [compuesto] = await componer([nuevo], token);
+  return compuesto;
 }
 
 async function actualizar(id, datos, token) {
@@ -88,7 +86,9 @@ async function actualizar(id, datos, token) {
     throw new HttpError(409, `Ya existe un vehículo con la placa ${vehiculo.placa}`);
   }
 
-  return repo.update(id, vehiculo);
+  const actualizado = await repo.update(id, vehiculo);
+  const [compuesto] = await componer([actualizado], token);
+  return compuesto;
 }
 
 async function eliminar(id) {

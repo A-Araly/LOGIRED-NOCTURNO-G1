@@ -30,8 +30,8 @@ function validarVehiculo(datos) {
   if (datos.estado !== undefined && !ESTADOS_VALIDOS.includes(datos.estado)) {
     errores.push(`estado debe ser uno de: ${ESTADOS_VALIDOS.join(', ')}`);
   }
-  if (datos.conductor_id !== undefined && datos.conductor_id !== null && !esEnteroPositivo(datos.conductor_id)) {
-    errores.push('conductor_id debe ser un entero positivo o null');
+  if (!esEnteroPositivo(datos.conductor_id)) {
+    errores.push('conductor_id es obligatorio y debe ser un entero positivo');
   }
   return errores;
 }
@@ -43,7 +43,7 @@ function construirVehiculo(datos) {
     tipo: datos.tipo,
     capacidad_kg: datos.capacidad_kg,
     estado: datos.estado === undefined ? 'disponible' : datos.estado,
-    conductor_id: datos.conductor_id === undefined ? null : datos.conductor_id,
+    conductor_id: datos.conductor_id,
   };
 }
 
