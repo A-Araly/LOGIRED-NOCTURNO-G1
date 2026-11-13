@@ -5,8 +5,7 @@ con **Node.js + Express** organizado en capas. Es el microservicio común de tod
 y, en esta versión, la plantilla para construir el suyo: cópienla y adapten **todas** las capas
 a su propia entidad.
 
-Esta es la versión del Taller 1: datos en memoria y tres operaciones. La versión completa
-(MySQL, contraseña cifrada, inicio de sesión y tokens JWT) se entrega en el Taller 3.
+Gestiona la entidad cliente, la responsable es Araly Arroyo Garcés, y este microservicio se escucha en el puerto 3002
 
 ## Cómo ejecutarlo
 
@@ -15,8 +14,62 @@ Requisitos: Node.js LTS 22 o superior (`node -v`).
 ```
 npm install                 # descarga Express en node_modules
 copy .env.example .env      # en Windows (en Linux/Mac: cp .env.example .env)
+En la terminal de xampp debe crea la base de datos CREATE DATABASE clientes_db;
+crear el usuario: CREATE USER 'clientes_user'@'localhost' IDENTIFIED BY 'una-clave-segura';
+darle los permisos: GRANT ALL PRIVILEGES ON clientes_db.* TO 'clientes_user'@'localhost';
+y llamar el archivo scheme.sql: source C:\Users\araly\OneDrive\Documentos\proyectosUnity\Microproyecto-3-redes\ms-clientes\src\db\scheme.sql;
 npm run dev                 # inicia y se reinicia solo al guardar cambios
 ```
+
+contrato JSON 
+
+Representación de un cliente
+
+Así responde GET /usuarios/1 . Es la forma que tendrá cada usuario en todas las respuestas del servicio 
+
+{
+"id": 1,
+"nombre": "cliente1",
+"documento": "1111777999",
+"telefono": "3115644230",
+"email": "cliente1.@logired.com",
+"ciudad": "cali"
+}
+
+Atributos 
+
+
+Atributo -Tipo - ¿Obligartorio al crear? -Reglas
+id       entero  No: lo asigna el servicio  Positivo y único; el cliente nunca lo envía 
+nombre   texto   Sí                         No vacío; se guarda sin espacios al inicio ni al final 
+documento texto  Sí                         No vacío; se guarda sin espacios al inicio ni al final 
+telefono  texto  Sí                         No vacío; se guarda sin espacios al inicio ni al final 
+email    texto   Sí                   Formato de correo válido; se guarda en minúsculas; único (si se repite: 409), se guarda en minúsculas  
+ciudad   texto   Sí                     No vacío; se guarda sin espacios al inicio ni al final, se guarda en minúsculas 
+
+
+
+Cuerpo para crear un cliente
+
+{
+    "nombre": "cliente4",
+    "documento": "1111772222",
+    "telefono": "3115644410",
+    "email": "cliente4@empresa.com",
+    "ciudad": "cali"
+}
+
+
+Formato de los errores 
+
+Todos los errores responden con el mismo formato, para que quien consume el servicio los
+maneje siempre igual (la lista de detalles aparece solo en los errores de validación):
+
+{
+"error": "Datos inválidos",
+"detalles": ["email es obligatorio y debe tener un formato válido", "el nombre es obligatorio", “el documento es obligatorio y debe ser único”,  "el telefono es obligatorio", "la ciudad es obligatorio" ]
+}
+
 
 Prueben en el navegador: http://localhost:3001/health y http://localhost:3001/clientes
 
@@ -40,8 +93,17 @@ Prueben en el navegador: http://localhost:3001/health y http://localhost:3001/cl
 | GET | /health | 200 `{"servicio":"ms-clientes","estado":"ok"}` |
 | GET | /clientes | 200 arreglo de clientes |
 | GET | /clientes/:id | 200 cliente · 400 id inválido · 404 no existe |
-| POST | /clientes | 201 cliente creado · 400 datos inválidos · 409 email repetido |
+| GET | /clientes?ciudad= | 200 cliente filtrado por ciudad |
+| GET | /clientes?ids= | 200 cliente de esos ids · 400 ids inválido|
+| POST | /clientes | 201 cliente creado · 400 datos inválidos · 409 email repetido o documento repetido|
+| PUT | /clientes/:id | 200 cliente actualizado · 400 datos inválidos · 409 email repetido o documento repetido · 404 no existe |
+| DELETE | /clientes/:id | 204 cliente borrado · 404 no existe |
 
 Ejemplo de cuerpo para POST:
 `{nombre: 'cliente1', documento: '1111777999', telefono: '3115644230', email: 'cliente1@empresa.com', ciudad: 'cali'}`
 
+Relacion:
+
+Me consulta | peticiones que me hace | Campos que no puedo cambiar sin 
+avisar 
+ms-envios   | GET /clientes/:id · GET /clientes?ids=… | id, nombre, documento
