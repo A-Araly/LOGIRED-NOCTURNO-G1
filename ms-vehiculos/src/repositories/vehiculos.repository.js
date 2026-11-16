@@ -4,8 +4,9 @@
 // así que la capa de servicio no necesita cambios.
 const pool = require('../db');
 
+
 // Traduce la fila de MySQL al formato del contrato (hoy coinciden: snake_case)
-function aVehiculo(fila) {
+function aVehiculos(fila) {
   return { ...fila };
 }
 
