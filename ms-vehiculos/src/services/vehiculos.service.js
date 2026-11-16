@@ -7,10 +7,16 @@ const conductoresClient = require('../clients/conductores.client');
 const { validarVehiculo, construirVehiculo } = require('../models/vehiculo');
 const HttpError = require('../utils/http-error');
 
-// Relación: el conductor referenciado debe existir en ms-conductores.
+// Regla de negocio: todo vehículo debe tener un conductor asignado
+// y ese conductor debe existir en ms-conductores.
 // El cliente lanza 503 si ms-conductores no responde.
 async function validarConductor(conductorId, token) {
-  if (conductorId === null || conductorId === undefined) return;
+  if (conductorId === null || conductorId === undefined || conductorId === '') {
+    throw new HttpError(
+      400,
+      'El vehículo debe tener un conductor asignado (conductor_id es obligatorio)'
+    );
+  }
 
   if (!(await conductoresClient.existeConductor(conductorId, token))) {
     throw new HttpError(400, `No existe el conductor con id ${conductorId}`);
@@ -55,7 +61,7 @@ async function crear(datos, token) {
 
   const vehiculo = construirVehiculo(datos);
 
-  // Validar que el conductor exista antes de guardar
+  // El conductor es obligatorio y debe existir antes de guardar
   await validarConductor(vehiculo.conductor_id, token);
 
   // No puede haber dos vehículos con la misma placa
@@ -77,12 +83,13 @@ async function actualizar(id, datos, token) {
   const existente = await repo.findById(id);
   if (!existente) throw new HttpError(404, `No existe el vehículo con id ${id}`);
 
-  // Validar que el conductor exista antes de actualizar
+  // El conductor es obligatorio y debe existir antes de actualizar
   await validarConductor(vehiculo.conductor_id, token);
 
   // La placa no puede pertenecer a otro vehículo
+  // (se compara como número: el id de la URL llega como texto)
   const otro = await repo.findByPlaca(vehiculo.placa);
-  if (otro && otro.id !== id) {
+  if (otro && Number(otro.id) !== Number(id)) {
     throw new HttpError(409, `Ya existe un vehículo con la placa ${vehiculo.placa}`);
   }
 

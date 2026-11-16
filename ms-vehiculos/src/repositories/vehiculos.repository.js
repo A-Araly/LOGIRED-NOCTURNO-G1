@@ -4,7 +4,8 @@
 // así que la capa de servicio no necesita cambios.
 const pool = require('../db');
 
-//MySQL guarda BOOLEAN 
+
+// Traduce la fila de MySQL al formato del contrato (hoy coinciden: snake_case)
 function aVehiculos(fila) {
   return { ...fila };
 }
