@@ -1,4 +1,3 @@
-# ms-clientes · Plantilla del Taller 1 (Módulo 3)
 
 Redes y Servicios Multimedia · UAO · Microservicio de **clientes** de la aplicación,
 con **Node.js + Express** organizado en capas. Es el microservicio común de todos los grupos
@@ -86,7 +85,7 @@ Prueben en el navegador: http://localhost:3001/health y http://localhost:3001/cl
 | src/models/cliente.js | Modelo | Atributos de la entidad y su validación |
 | src/utils/http-error.js | Utilidad | Error con código de estado HTTP |
 
-## Endpoints (Taller 1)
+## Endpoints
 
 | Método | URI | Respuesta |
 |---|---|---|
