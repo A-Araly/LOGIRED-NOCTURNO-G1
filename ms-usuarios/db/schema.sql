@@ -14,5 +14,9 @@ CREATE TABLE usuarios (
 -- Email: admin@empresa.com   Contraseña: Admin2026*
 -- Cámbienle la contraseña (PUT /usuarios/1) apenas despliegue la aplicación.
 INSERT INTO usuarios (nombre, email, password_hash, rol, activo) VALUES
-  ('Administrador General', 'admin@empresa.com',
-   '$2b$10$O7aBlpBQjnWE69ssLR1Nr.pNZpZiIx3r4kGZGsRHeEkM6SVhg.mUS', 'administrador', TRUE);
+  ('Administrador General', 'admin@logired.com',
+   '$2b$10$O7aBlpBQjnWE69ssLR1Nr.pNZpZiIx3r4kGZGsRHeEkM6SVhg.mUS', 'administrador', TRUE),
+   ('Admin despacho', 'Admindespacho@logired.com',
+    '$2b$10$O7aBlpBQjnWE69ssLR1Nr.pNZpZiIx3r4kGZGsRHeEkM6SVhg.mUS', 'despacho', TRUE),
+    ('Admin flota', 'Adminflota@logired.com',
+     '$2b$10$O7aBlpBQjnWE69ssLR1Nr.pNZpZiIx3r4kGZGsRHeEkM6SVhg.mUS', 'flota', TRUE);
