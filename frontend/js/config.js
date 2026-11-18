@@ -23,12 +23,15 @@ const SECCIONES_POR_ROL = {
   administrador: [
     { id: 'envios', nombre: 'Envíos', editar: true },
     { id: 'usuarios', nombre: 'Usuarios', editar: true },
+    { id: 'conductores', nombre: 'Conductores', editar: true },
   ],
   despacho: [
     { id: 'envios', nombre: 'Envíos', editar: true },
+    { id: 'conductores', nombre: 'Conductores', editar: false },
   ],
   flota: [
     { id: 'envios', nombre: 'Envíos', editar: false },
+    { id: 'conductores', nombre: 'Conductores', editar: true },
   ],
 };
 
