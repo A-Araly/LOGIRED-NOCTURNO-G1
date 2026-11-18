@@ -22,13 +22,16 @@ const PAGINA_POR_ROL = {
 const SECCIONES_POR_ROL = {
   administrador: [
     { id: 'envios', nombre: 'Envíos', editar: true },
+    { id: 'vehiculos', nombre: 'Vehículos', editar: true },
     { id: 'usuarios', nombre: 'Usuarios', editar: true },
   ],
   despacho: [
     { id: 'envios', nombre: 'Envíos', editar: true },
+    { id: 'vehiculos', nombre: 'Vehículos', editar: false },
   ],
   flota: [
     { id: 'envios', nombre: 'Envíos', editar: false },
+    { id: 'vehiculos', nombre: 'Vehículos', editar: true },
   ],
 };
 
