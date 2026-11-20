@@ -37,3 +37,9 @@ Cómo ejecutar un microservicio:
 
 Al principio se instala las dependencias requeridas con el comando npm install, después creamos el .env y por ultimo ponemos a correr el servisio con npm run dev
 
+Cómo desplegar el aplicativo en el ambiente:
+Paso 1: asegurarse de encender ambas maquinas (servidorFacturacion y servidorErp).
+Paso 2: confirmar estado activo de los microservicios.
+Paso 3: ir a configuración de windows, ya estando en la configuración de red, colocar la ip del servidorErp en el adaptador de la maquina.
+Paso 4: introducir el url de la página web en el navegador.
+
